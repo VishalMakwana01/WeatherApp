@@ -7,6 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Weather App</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
 
 
@@ -16,7 +18,7 @@
   <section class="hero is-primary">
     <div class="hero-body" style=" background-color:rgb(56, 202, 190); ">
       <div class="container">
-        <h1 class="title" style="color:black; opacity: .7; font-size: 32px">
+        <h1 class="title" style="color:black; opacity: .7">
           How's the weather like?
         </h1>
       </div>
@@ -33,7 +35,7 @@
                 {{form.name}}
               </div>
               <div class="control">
-                <button type="submit" class="button" style="background-color: rgb(56, 202, 190)">
+                <button type="submit" class="button" style="background-color: rgb(56, 202, 190)" name="_add">
                   Add City
                 </button>
               </div>
@@ -48,7 +50,7 @@
       <div class="columns">
         <div class="column is-offset-4 is-4">
           {% for city_weather in weather_data %}
-          <div class="box" style="box-shadow:2px 4px 8px black ">
+          <div class="box" style="box-shadow:1px 2px 8px black ">
             <article class="media">
               <div class="media-left">
                 <figure class="image is-50x50">
@@ -64,20 +66,16 @@
 
 
                     <br />
-                    <span class="subtitle">{{ city_weather.temperature }}° C</span>
-                    <br />
-                    <span style="text-transform:capitalize"> {{city_weather.description }}</span>
                     <br>
-                    {{city_weather.temp_min}}° C -
 
-                    {{city_weather.temp_max}}° C
-                    <br>
-                    Humidity: {{city_weather.humidity}} %
-                  </p>
+                    <span class="subtitle">{{ city_weather.temperature }}° C</span>
+
                 </div>
               </div>
               <div class="media-right">
-                <a class="delete"></a>
+                <span class="icon has-text-info">
+                  <a href="{% url 'details_page' %}"><i class="fas fa-info-circle"></i></a>
+                </span>
               </div>
             </article>
           </div>
