@@ -6,8 +6,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Weather App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
 
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    <style>
+        .modal-open {
+            overflow: hidden;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1050;
+            display: none;
+            overflow: hidden;
+            outline: 0;
+        }
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .modal-dialog {
+            position: relative;
+            width: auto;
+            margin: 0.5rem;
+            pointer-events: none;
+        }
+
+        .modal.fade .modal-dialog {
+            transition: -webkit-transform 0.3s ease-out;
+            transition: transform 0.3s ease-out;
+            transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+            -webkit-transform: translate(0, -25%);
+            transform: translate(0, -25%);
+        }
+
+        .modal.show .modal-dialog {
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+        }
+
+        .modal-dialog-centered {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            min-height: calc(100% - (0.5rem * 2));
+        }
+
+        .modal-content {
+            position: relative;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            width: 100%;
+            pointer-events: auto;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0.3rem;
+            outline: 0;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1040;
+            background-color: #000;
+        }
+
+        .modal-backdrop.fade {
+            opacity: 0;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.5;
+        }
+
+        .modal-header {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            border-top-left-radius: 0.3rem;
+            border-top-right-radius: 0.3rem;
+        }
+
+        .modal-header .close {
+            padding: 1rem;
+            margin: -1rem -1rem -1rem auto;
+        }
+
+        .modal-title {
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        .modal-body {
+            position: relative;
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1rem;
+        }
+
+        .modal-footer {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+            padding: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .modal-footer> :not(:first-child) {
+            margin-left: .25rem;
+        }
+
+        .modal-footer> :not(:last-child) {
+            margin-right: .25rem;
+        }
+
+        .modal-scrollbar-measure {
+            position: absolute;
+            top: -9999px;
+            width: 50px;
+            height: 50px;
+            overflow: scroll;
+        }
+
+        @media (min-width: 576px) {
+            .modal-dialog {
+                max-width: 500px;
+                margin: 1.75rem auto;
+            }
+
+            .modal-dialog-centered {
+                min-height: calc(100% - (1.75rem * 2));
+            }
+
+            .modal-sm {
+                max-width: 300px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .modal-lg {
+                max-width: 800px;
+            }
+        }
+
+
+
+        table,
+        th,
+        td {
+            border: 1px solid rgb(56, 202, 190);
+            border-collapse: collapse;
+            font-size: 12px;
+            padding: 5px
+        }
+
+        .descriptionclass {
+            text-transform: capitalize
+        }
+    </style>
 
 
 </head>
@@ -57,7 +260,8 @@
                                     <p>
 
 
-                                        <span class="title" id="showModal">{{ city_weather.city }}</span>
+                                        <span class="title" style="text-transform: capitalize"
+                                            id="showModal">{{ city_weather.city }}</span>
 
 
                                         <br />
@@ -78,7 +282,118 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="media-right">
+                                <span class="icon has-text-info">
+                                    <a data-toggle="modal" data-target="#myModal{{city_weather.city}}"><i
+                                            class="fas fa-info-circle"></i></a>
+                                </span>
+                                {% for city_forecast in weather_forecast %}
+                                <div id="myModal{{city_forecast.city}}" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
 
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" style="text-transform: capitalize">
+                                                    {{ city_forecast.city}}</h4>
+                                                <button type="button" class="close"
+                                                    data-dismiss="modal">&times;</button>
+
+                                            </div>
+                                            <div class="modal-body">
+                                                <table style="width:100%">
+                                                    <tr>
+                                                        <th></th>
+                                                        <td>
+                                                            <figure class="image is-50x50">
+                                                                <img src="http://openweathermap.org/img/w/{{city_forecast.icon0}}.png"
+                                                                    alt="Image" style="height: 30px; width: 30px" />
+                                                            </figure>
+                                                        </td>
+                                                        <td>
+                                                            <figure class="image is-50x50">
+                                                                <img src="http://openweathermap.org/img/w/{{city_forecast.icon1}}.png"
+                                                                    alt="Image" style="height: 30px; width: 30px" />
+                                                            </figure>
+                                                        </td>
+                                                        <td>
+                                                            <figure class="image is-50x50">
+                                                                <img src="http://openweathermap.org/img/w/{{city_forecast.icon2}}.png"
+                                                                    alt="Image" style="height: 30px; width: 30px" />
+                                                            </figure>
+                                                        </td>
+                                                        <td>
+                                                            <figure class="image is-50x50">
+                                                                <img src="http://openweathermap.org/img/w/{{city_forecast.icon3}}.png"
+                                                                    alt="Image" style="height: 30px; width: 30px" />
+                                                            </figure>
+                                                        </td>
+                                                        <td>
+                                                            <figure class="image is-50x50">
+                                                                <img src="http://openweathermap.org/img/w/{{city_forecast.icon4}}.png"
+                                                                    alt="Image" style="height: 30px; width: 30px" />
+                                                            </figure>
+                                                        </td>
+                                                        <td>
+                                                            <figure class="image is-50x50">
+                                                                <img src="http://openweathermap.org/img/w/{{city_forecast.icon5}}.png"
+                                                                    alt="Image" style="height: 30px; width: 30px" />
+                                                            </figure>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Date and Time</th>
+                                                        <td>{{city_forecast.date0}}</td>
+                                                        <td>{{city_forecast.date1}}</td>
+                                                        <td>{{city_forecast.date2}}</td>
+                                                        <td>{{city_forecast.date3}}</td>
+                                                        <td>{{city_forecast.date4}}</td>
+                                                        <td>{{city_forecast.date5}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Temperature</th>
+                                                        <td>{{city_forecast.temp0}}° C</td>
+                                                        <td>{{city_forecast.temp1}}° C</td>
+                                                        <td>{{city_forecast.temp2}}° C</td>
+                                                        <td>{{city_forecast.temp3}}° C</td>
+                                                        <td>{{city_forecast.temp4}}° C</td>
+                                                        <td>{{city_forecast.temp5}}° C</td>
+                                                    </tr>
+                                                    <tr class="descriptionclass">
+                                                        <th>Description</th>
+                                                        <td>{{city_forecast.description0}}</td>
+                                                        <td>{{city_forecast.description1}}</td>
+                                                        <td>{{city_forecast.description2}}</td>
+                                                        <td>{{city_forecast.description3}}</td>
+                                                        <td>{{city_forecast.description4}}</td>
+                                                        <td>{{city_forecast.description5}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Humidity</th>
+                                                        <td>{{city_forecast.humidity0}} %</td>
+                                                        <td>{{city_forecast.humidity1}} %</td>
+                                                        <td>{{city_forecast.humidity2}} %</td>
+                                                        <td>{{city_forecast.humidity3}} %</td>
+                                                        <td>{{city_forecast.humidity4}} %</td>
+                                                        <td>{{city_forecast.humidity5}} %</td>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </article>
                     </div>
                     {% endfor %}
